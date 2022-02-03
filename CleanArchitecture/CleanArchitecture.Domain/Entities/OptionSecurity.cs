@@ -1,4 +1,5 @@
-﻿namespace CleanArchitecture.Domain.Entities
+﻿using CleanArchitecture.Domain.Common;
+namespace CleanArchitecture.Domain.Entities
 {
     public class OptionSecurity : BaseEntity
     {

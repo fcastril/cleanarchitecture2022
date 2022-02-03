@@ -1,6 +1,8 @@
-﻿namespace CleanArchitecture.Domain.Entities
+﻿using CleanArchitecture.Domain.Entities;
+
+namespace CleanArchitecture.Domain.Common
 {
-    public class BaseGeneralEntity : BaseEntity
+    public abstract class BaseGeneralEntity : BaseEntity
     {
         public Guid CompanyId { get; set; }
         public virtual Company? Company { get; set; }

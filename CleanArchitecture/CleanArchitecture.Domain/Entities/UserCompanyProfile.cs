@@ -1,6 +1,7 @@
-﻿namespace CleanArchitecture.Domain.Entities
+﻿using CleanArchitecture.Domain.Common;
+namespace CleanArchitecture.Domain.Entities
 {
-    public class UserCompanyProfile : BaseEntity
+    public abstract class UserCompanyProfile : BaseEntity
     {
         public Guid UserId { get; set; }
         public virtual User? User { get; set; }
