@@ -2,7 +2,7 @@
 
 namespace CleanArchitecture.Application.Contracts.Persistence
 {
-    public interface ICompanyRepository : IAsyncRepository<Company>
+    public interface ICompanyRepository : IBaseRepository<Company>
     {
         Task<Company> GetCompanyByCodeAsync(string Code);
     }

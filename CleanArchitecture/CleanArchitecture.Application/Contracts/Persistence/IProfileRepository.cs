@@ -2,8 +2,8 @@
 
 namespace CleanArchitecture.Application.Contracts.Persistence
 {
-    public interface IProfileRepository : IAsyncRepository<Profile>
+    public interface IProfileRepository : IBaseRepository<Profile>
     {
-        Task<IAsyncRepository<Profile>> GetProfilesByCompanyIdAsync(Guid companyId);
+        Task<IBaseRepository<Profile>> GetProfilesByCompanyIdAsync(Guid companyId);
     }
 }
