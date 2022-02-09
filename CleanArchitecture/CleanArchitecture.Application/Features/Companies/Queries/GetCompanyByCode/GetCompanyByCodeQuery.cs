@@ -1,13 +1,13 @@
-﻿using CleanArchitecture.Application.ViewModels;
+﻿using CleanArchitecture.Application.DTO;
 using MediatR;
 
 namespace CleanArchitecture.Application.Features.Companies.Queries.GetCompaniesList
 {
-    public class GetCompanyQuery : IRequest<Company>
+    public class GetCompanyByCodeQuery : IRequest<CompanyDto>
     {
         public string Code { get; set; } = string.Empty;
 
-        public GetCompanyQuery(string code)
+        public GetCompanyByCodeQuery(string code)
         {
             Code = code ?? throw new ArgumentNullException(nameof(code));
         }

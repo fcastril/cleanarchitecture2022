@@ -1,7 +1,7 @@
 ﻿using CleanArchitecture.Domain.Common;
 namespace CleanArchitecture.Domain.Entities
 {
-    public abstract class UserCompanyProfile : BaseEntity
+    public class UserCompanyProfile : BaseEntity
     {
         public Guid UserId { get; set; }
         public virtual User? User { get; set; }

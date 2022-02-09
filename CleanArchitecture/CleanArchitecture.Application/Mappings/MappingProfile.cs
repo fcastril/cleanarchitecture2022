@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Application.Features.Options.Commands.CreateOpion;
+﻿using CleanArchitecture.Application.DTO;
+using CleanArchitecture.Application.Features.Options.Commands.CreateOpion;
 using CleanArchitecture.Domain.Entities;
 
 namespace CleanArchitecture.Application.Mappings
@@ -7,7 +8,7 @@ namespace CleanArchitecture.Application.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<Company, ViewModels.Company>();
+            CreateMap<Company, CompanyDto>();
             CreateMap<CreateOptionCommand, Option>();
         }
     }

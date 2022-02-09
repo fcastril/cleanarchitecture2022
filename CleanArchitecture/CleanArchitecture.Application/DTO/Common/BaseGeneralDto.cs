@@ -1,6 +1,6 @@
-﻿namespace CleanArchitecture.Application.ViewModels.Common
+﻿namespace CleanArchitecture.Application.DTO.Common
 {
-    public class BaseEntityGeneral : BaseEntity
+    public class BaseGeneralDto : BaseDto
     {
         public Guid CompanyId { get; set; }
         public Guid UserCreatedId { get; set; }

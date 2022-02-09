@@ -1,6 +1,6 @@
 ﻿namespace CleanArchitecture.Domain.Common
 {
-    public class BaseEntity
+    public abstract class BaseEntity
     {
         public Guid Id { get; set; }
         public DateTime CreatedDateTime { get; set; }

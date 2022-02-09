@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CleanArchitecture.Application.Features.Options.Commands.UpdateOption
 {
-    public class UpdateOptionCommandHandler : IRequestHandler<UpdateOptionCommand>
+    public class UpdateOptionCommandHandler : IRequestHandler<UpdateOptionCommand, Guid>
     {
         private readonly IOptionRepository _optionRepository;
         private readonly IMapper _mapper;
@@ -20,7 +20,7 @@ namespace CleanArchitecture.Application.Features.Options.Commands.UpdateOption
             _logger = logger;
         }
 
-        public async Task<Unit> Handle(UpdateOptionCommand request, CancellationToken cancellationToken)
+        public async Task<Guid> Handle(UpdateOptionCommand request, CancellationToken cancellationToken)
         {
             Option optionToUpdate = await _optionRepository.GetByIdAsync(request.Id);
             if (optionToUpdate == null)
@@ -31,11 +31,11 @@ namespace CleanArchitecture.Application.Features.Options.Commands.UpdateOption
 
             _mapper.Map(request, optionToUpdate, typeof(UpdateOptionCommand), typeof(Option));
 
-            await _optionRepository.UpdateAsync(optionToUpdate);
+            optionToUpdate = await _optionRepository.UpdateAsync(optionToUpdate);
 
             _logger.LogInformation($"Se actualizó de forma éxitosamente Option: {request.Id}");
 
-            return Unit.Value;
+            return optionToUpdate.Id;
         }
     }
 }

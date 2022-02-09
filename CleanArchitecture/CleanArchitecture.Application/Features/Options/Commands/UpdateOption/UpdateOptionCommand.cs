@@ -2,7 +2,7 @@
 
 namespace CleanArchitecture.Application.Features.Options.Commands.UpdateOption
 {
-    public class UpdateOptionCommand : IRequest
+    public class UpdateOptionCommand : IRequest<Guid>
     {
         public Guid Id { get; set; }
         public string Code { get; set; } = string.Empty;
