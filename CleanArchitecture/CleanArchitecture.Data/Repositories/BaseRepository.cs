@@ -28,15 +28,9 @@ namespace CleanArchitecture.Infrastructure.Repositories
             await _mainContext.SaveChangesAsync();
         }
 
-        public virtual async Task<IReadOnlyList<T>> GetAllAsync()
-        {
-            return await _mainContext.Set<T>().ToListAsync();
-        }
+        public virtual async Task<IReadOnlyList<T>> GetAllAsync() => await _mainContext.Set<T>().ToListAsync();
 
-        public virtual async Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate)
-        {
-            return await _mainContext.Set<T>().Where(predicate).ToListAsync();
-        }
+        public virtual async Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate) => await _mainContext.Set<T>().Where(predicate).ToListAsync();
 
         public virtual async Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy, string? includeString = null, bool disableTracking = true)
         {
@@ -69,10 +63,7 @@ namespace CleanArchitecture.Infrastructure.Repositories
 
         }
 
-        public virtual async Task<T> GetByIdAsync(Guid Id)
-        {
-            return await _mainContext.Set<T>().FindAsync(Id);
-        }
+        public virtual async Task<T> GetByIdAsync(Guid Id) => await _mainContext!.Set<T>().FindAsync(Id) ?? new();
 
         public virtual async Task<T> UpdateAsync(T entity)
         {

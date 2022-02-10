@@ -1,11 +1,5 @@
 ﻿using CleanArchitecture.Domain.Entities;
-using CleanArchitecture.Infrastructure.Persistence;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CleanArchitecture.Infrastructure.Persistence.Seeds
 {
@@ -13,9 +7,10 @@ namespace CleanArchitecture.Infrastructure.Persistence.Seeds
     {
         public static async Task SeedAsync(MainContext context, ILogger<CompanySeed> logger)
         {
-            if (!context.Companies.Any())
+            if (!context.Companies!.Any())
             {
-                context.Companies.AddRange(GetPreconfiguredCompany());
+                context.Companies!.AddRange(GetPreconfiguredCompany());
+                await context.SaveChangesAsync();
             }
         }
         private static IEnumerable<Company> GetPreconfiguredCompany()
@@ -26,7 +21,7 @@ namespace CleanArchitecture.Infrastructure.Persistence.Seeds
                     Id = Guid.NewGuid(),
                     Code = "000",
                     Name = "Empresa de Prueba"
-                    
+
                 }
             };
         }

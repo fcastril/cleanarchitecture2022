@@ -18,9 +18,9 @@ namespace CleanArchitecture.Application.Features.Companies.Queries.GetCompaniesL
 
         public async Task<CompanyDto> Handle(GetCompanyByCodeQuery request, CancellationToken cancellationToken)
         {
-            Domain.Entities.Company company = await _companyRepository.GetCompanyByCodeAsync(request.Code);
+            IReadOnlyList< Domain.Entities.Company > companies = await _companyRepository.GetAsync(c => c.Code == request.Code);
 
-            return _mapper.Map<CompanyDto>(company);
+            return _mapper.Map<CompanyDto>(companies.FirstOrDefault());
 
         }
     }
