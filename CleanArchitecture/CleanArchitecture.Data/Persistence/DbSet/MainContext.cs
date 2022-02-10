@@ -1,7 +1,7 @@
 ﻿using CleanArchitecture.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanArchitecture.Data.Common
+namespace CleanArchitecture.Infrastructure.Persistence
 {
     public partial class MainContext : DbContext
     {

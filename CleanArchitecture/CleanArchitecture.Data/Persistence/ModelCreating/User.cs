@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace CleanArchitecture.Data.Common.ModelCreating
+namespace CleanArchitecture.Infrastructure.Persistence.ModelCreating
 {
     public static class User
     {
