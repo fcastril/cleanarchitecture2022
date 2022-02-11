@@ -11,7 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Companies\Commands\" />
+    <Folder Include="Features\Companies\Commands\CreateCompany\" />
+    <Folder Include="Features\Companies\Commands\DeleteCompany\" />
+    <Folder Include="Features\Companies\Commands\UpdateCompany\" />
     <Folder Include="Features\Options\Queries\" />
   </ItemGroup>
 
