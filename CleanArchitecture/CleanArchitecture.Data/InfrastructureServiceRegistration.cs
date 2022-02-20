@@ -23,7 +23,6 @@ namespace CleanArchitecture.Infrastructure
             services.AddScoped<IOptionSecurityRepository, OptionSecurityRepository>();
             services.AddScoped<IProfileRepository, ProfileRepository>();
             services.AddScoped<IUserCompanyProfileRepository, UserCompanyProfileRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
 
             services.Configure<EmailSettings>(c => configuration.GetSection("EmailSettings"));
             services.AddTransient<IEmailService, EmailService>();

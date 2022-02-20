@@ -14,7 +14,7 @@ namespace CleanArchitecture.Identity
 {
     public static class IdentityServiceRegistration
     {
-        public static IServiceCollection ConfigureIdentityServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection ConfigurationIdentityServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
             services.AddDbContext<CleanArchitectureIdentityDbContext>(options =>
