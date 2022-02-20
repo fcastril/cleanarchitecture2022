@@ -28,13 +28,19 @@ namespace CleanArchitecture.Identity.Services
 
         public async Task<AuthResponse> Login(AuthRequest request)
         {
-            ApplicationUser user = await _userManager.FindByEmailAsync(request.Email);
+            ApplicationUser user = await _userManager.FindByNameAsync(request.Username);
+            
             if (user == null)
             {
-                throw new Exception($"El Usuario con Email {request.Email} no existe");
+                user = await _userManager.FindByEmailAsync(request.Email);
+            }
+            if (user == null)
+            {
+                throw new Exception($"El Usuario no existe");
             }
 
-            SignInResult result = await _signInManager.PasswordSignInAsync(request.UserName, request.Password, false, lockoutOnFailure: false);
+
+            SignInResult result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
             if (!result.Succeeded)
             {
                 throw new Exception($"Las credenciales son incorrectas");
