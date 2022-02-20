@@ -63,7 +63,7 @@ namespace CleanArchitecture.Infrastructure.Repositories
 
         }
 
-        public virtual async Task<T> GetByIdAsync(Guid Id) => await _mainContext!.Set<T>().FindAsync(Id) ?? new();
+        public virtual async Task<T> GetByIdAsync(Guid Id) => await _mainContext!.Set<T>().FindAsync(Id);
 
         public virtual async Task<T> UpdateAsync(T entity)
         {
