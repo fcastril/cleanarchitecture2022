@@ -1,7 +1,12 @@
-﻿using CleanArchitecture.Application.Contracts.Identity;
+﻿using CleanArchitecture.Application.Constants;
+using CleanArchitecture.Application.Contracts.Identity;
 using CleanArchitecture.Application.Models.Identity;
 using CleanArchitecture.Identity.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace CleanArchitecture.Identity.Services
 {
@@ -11,8 +16,8 @@ namespace CleanArchitecture.Identity.Services
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly JwtSettings _jwtSettings;
 
-        public AuthService(UserManager<ApplicationUser> userManager, 
-                           SignInManager<ApplicationUser> signInManager, 
+        public AuthService(UserManager<ApplicationUser> userManager,
+                           SignInManager<ApplicationUser> signInManager,
                            JwtSettings jwtSettings)
         {
             _userManager = userManager;
@@ -34,11 +39,13 @@ namespace CleanArchitecture.Identity.Services
                 throw new Exception($"Las credenciales son incorrectas");
             }
 
+            JwtSecurityToken token = await GenerateToken(user);
+
             AuthResponse authResponse = new AuthResponse()
             {
                 Id = new Guid(user.Id),
                 Email = user.Email,
-                Token = "",
+                Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Username = user.UserName,
             };
             return authResponse;
@@ -70,16 +77,51 @@ namespace CleanArchitecture.Identity.Services
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, "Invitado");
+
+                JwtSecurityToken token = await GenerateToken(user);
+
                 return new RegistrationResponse
                 {
                     Email = user.Email,
-                    Token = "",
+                    Token = new JwtSecurityTokenHandler().WriteToken(token),
                     UserId = new Guid(user.Id),
                     Username = user.UserName
                 };
             }
 
             throw new Exception($"{result.Errors}");
+        }
+
+        private async Task<JwtSecurityToken> GenerateToken(ApplicationUser user)
+        {
+            var userClaims = await _userManager.GetClaimsAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            var roleClaims = new List<Claim>();
+
+            foreach (var role in roles)
+            {
+                roleClaims.Add(new Claim(ClaimTypes.Role, role));
+            }
+
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(CustomClaimTypes.Uid, user.Id)
+            }.Union(userClaims).Union(roleClaims);
+
+            SymmetricSecurityKey symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+            SigningCredentials signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+
+            JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
+                issuer: _jwtSettings.Issuer,
+                audience: _jwtSettings.Audience,
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes),
+                signingCredentials: signingCredentials);
+
+            return jwtSecurityToken;
         }
     }
 }
