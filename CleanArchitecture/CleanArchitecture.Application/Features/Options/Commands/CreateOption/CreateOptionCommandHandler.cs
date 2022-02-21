@@ -8,25 +8,34 @@ namespace CleanArchitecture.Application.Features.Options.Commands.CreateOpion
 {
     public class CreateOptionCommandHandler : IRequestHandler<CreateOptionCommand, Guid>
     {
-        private readonly IOptionRepository _optionRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILogger<CreateOptionCommandHandler> _logger;
 
-        public CreateOptionCommandHandler(IOptionRepository optionRepository, IMapper mapper, ILogger<CreateOptionCommandHandler> logger)
+        public CreateOptionCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<CreateOptionCommandHandler> logger)
         {
-            _optionRepository = optionRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;
         }
 
         public async Task<Guid> Handle(CreateOptionCommand request, CancellationToken cancellationToken)
         {
+
             Option optionEntity = _mapper.Map<Option>(request);
-            Option optionNew = await _optionRepository.AddAsync(optionEntity);
+            _unitOfWork.Repository<Option>().AddEntity(optionEntity);
+            int result = await _unitOfWork.Complete();
 
-            _logger.LogInformation($"Option {optionNew.Id} fue creado exitosamente");
+            if (result <= 0)
+            {
+                _logger.LogError($"Option {optionEntity.Id} no fue insertado");
+                throw new Exception("No se pudo insertar la Opción");
+            }
 
-            return optionNew.Id;
+
+            _logger.LogInformation($"Option {optionEntity.Id} fue creado exitosamente");
+
+            return optionEntity.Id;
 
         }
     }
