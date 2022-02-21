@@ -1,11 +1,12 @@
 ﻿using CleanArchitecture.Application.Contracts.Persistence;
+using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace CleanArchitecture.Infrastructure.Repositories
 {
-    public class BaseRepository<T> : IBaseRepository<T> where T : class, new()
+    public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
         protected readonly MainContext _mainContext;
 
@@ -22,10 +23,20 @@ namespace CleanArchitecture.Infrastructure.Repositories
             return entity;
         }
 
+        public void AddEntity(T entity)
+        {
+            _mainContext.Set<T>().Add(entity);
+        }
+
         public virtual async Task DeleteAsync(T entity)
         {
             _mainContext.Set<T>().Remove(entity);
             await _mainContext.SaveChangesAsync();
+        }
+
+        public void DeleteEntity(T entity)
+        {
+            _mainContext.Set<T>().Remove(entity);
         }
 
         public virtual async Task<IReadOnlyList<T>> GetAllAsync() => await _mainContext.Set<T>().ToListAsync();
@@ -67,10 +78,17 @@ namespace CleanArchitecture.Infrastructure.Repositories
 
         public virtual async Task<T> UpdateAsync(T entity)
         {
+            _mainContext.Set<T>().Attach(entity);
             _mainContext.Entry(entity).State = EntityState.Modified;
             await _mainContext.SaveChangesAsync();
 
             return entity;
+        }
+
+        public void UpdateEntity(T entity)
+        {
+            _mainContext.Set<T>().Attach(entity);
+            _mainContext.Entry(entity).State = EntityState.Modified;
         }
     }
 }

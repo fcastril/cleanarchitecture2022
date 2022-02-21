@@ -1,8 +1,9 @@
-﻿using System.Linq.Expressions;
+﻿using CleanArchitecture.Domain.Common;
+using System.Linq.Expressions;
 
 namespace CleanArchitecture.Application.Contracts.Persistence
 {
-    public interface IBaseRepository<T> where T : class, new()
+    public interface IBaseRepository<T> where T : BaseEntity
     {
         Task<IReadOnlyList<T>> GetAllAsync();
         Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate);
@@ -18,5 +19,8 @@ namespace CleanArchitecture.Application.Contracts.Persistence
         Task<T> AddAsync(T entity);
         Task<T> UpdateAsync(T entity);
         Task DeleteAsync(T entity);
+        void AddEntity(T entity);
+        void UpdateEntity(T entity);
+        void DeleteEntity(T entity);
     }
 }
