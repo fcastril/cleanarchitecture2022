@@ -9,29 +9,32 @@ namespace CleanArchitecture.Application.Features.Options.Commands.UpdateOption
 {
     public class UpdateOptionCommandHandler : IRequestHandler<UpdateOptionCommand, Guid>
     {
-        private readonly IOptionRepository _optionRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILogger<UpdateOptionCommandHandler> _logger;
 
-        public UpdateOptionCommandHandler(IOptionRepository optionRepository, IMapper mapper, ILogger<UpdateOptionCommandHandler> logger)
+        public UpdateOptionCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<UpdateOptionCommandHandler> logger)
         {
-            _optionRepository = optionRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;
         }
 
         public async Task<Guid> Handle(UpdateOptionCommand request, CancellationToken cancellationToken)
         {
-            Option optionToUpdate = await _optionRepository.GetByIdAsync(request.Id);
+
+            Option optionToUpdate = await _unitOfWork.Repository<Option>().GetByIdAsync(request.Id);
+
+
             if (optionToUpdate == null)
             {
                 _logger.LogError($"No se encontro la Option Id {request.Id}");
                 throw new NotFoundException(nameof(Option), request.Id);
             }
-
             _mapper.Map(request, optionToUpdate, typeof(UpdateOptionCommand), typeof(Option));
 
-            optionToUpdate = await _optionRepository.UpdateAsync(optionToUpdate);
+            _unitOfWork.Repository<Option>().UpdateEntity(optionToUpdate);
+            await _unitOfWork.Complete();
 
             _logger.LogInformation($"Se actualizó de forma éxitosamente Option: {request.Id}");
 

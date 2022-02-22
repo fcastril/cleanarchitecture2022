@@ -26,19 +26,6 @@ namespace CleanArchitecture.Infrastructure.Persistence
                 }
             }
 
-            foreach (var entry in ChangeTracker.Entries<BaseGeneralEntity>())
-            {
-                switch (entry.State)
-                {
-                    case EntityState.Added:
-                        entry.Entity.CreatedDateTime = DateTime.UtcNow;
-                        entry.Entity.UpdatedDateTime = DateTime.UtcNow;
-                        break;
-                    case EntityState.Modified:
-                        entry.Entity.UpdatedDateTime = DateTime.UtcNow;
-                        break;
-                }
-            }
             return base.SaveChangesAsync(cancellationToken);
         }
 

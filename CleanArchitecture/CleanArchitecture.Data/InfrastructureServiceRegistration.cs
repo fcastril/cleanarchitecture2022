@@ -17,12 +17,8 @@ namespace CleanArchitecture.Infrastructure
             services.AddDbContext<MainContext>(
                 options => options.UseSqlServer(configuration.GetConnectionString("Default")));
 
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-            services.AddScoped<ICompanyRepository, CompanyRepository>();
-            services.AddScoped<IOptionRepository, OptionRepository>();
-            services.AddScoped<IOptionSecurityRepository, OptionSecurityRepository>();
-            services.AddScoped<IProfileRepository, ProfileRepository>();
-            services.AddScoped<IUserCompanyProfileRepository, UserCompanyProfileRepository>();
 
             services.Configure<EmailSettings>(c => configuration.GetSection("EmailSettings"));
             services.AddTransient<IEmailService, EmailService>();

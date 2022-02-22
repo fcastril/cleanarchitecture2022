@@ -23,6 +23,12 @@ namespace CleanArchitecture.Application.Features.Options.Commands.CreateOpion
         {
 
             Option optionEntity = _mapper.Map<Option>(request);
+
+            /*
+                Para Personalizar 
+
+                _unitOfWork.PersonalRepository.AddEntity(optionEntity);
+            */
             _unitOfWork.Repository<Option>().AddEntity(optionEntity);
             int result = await _unitOfWork.Complete();
 

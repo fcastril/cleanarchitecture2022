@@ -1,7 +1,7 @@
 ﻿using CleanArchitecture.Domain.Common;
 namespace CleanArchitecture.Domain.Entities
 {
-    public class Profile : BaseGeneralEntity
+    public class Profile : BaseEntity
     {
         public Profile()
         {

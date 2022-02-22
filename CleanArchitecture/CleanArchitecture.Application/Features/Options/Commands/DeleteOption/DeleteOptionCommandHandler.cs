@@ -9,27 +9,30 @@ namespace CleanArchitecture.Application.Features.Options.Commands.DeleteOption
 {
     public class DeleteOptionCommandHandler : IRequestHandler<DeleteOptionCommand>
     {
-        private readonly IOptionRepository _optionRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly ILogger<DeleteOptionCommandHandler> _logger;
 
-        public DeleteOptionCommandHandler(IOptionRepository optionRepository, IMapper mapper, ILogger<DeleteOptionCommandHandler> logger)
+        public DeleteOptionCommandHandler(IUnitOfWork unitOfWork, IMapper mapper, ILogger<DeleteOptionCommandHandler> logger)
         {
-            _optionRepository = optionRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;
         }
 
         public async Task<Unit> Handle(DeleteOptionCommand request, CancellationToken cancellationToken)
         {
-            Option optionToDelete = await _optionRepository.GetByIdAsync(request.Id);
+            Option optionToDelete = await _unitOfWork.Repository<Option>().GetByIdAsync(request.Id);
+
             if (optionToDelete == null)
             {
                 _logger.LogError($"No se encontro la Option Id {request.Id}");
                 throw new NotFoundException(nameof(Option), request.Id);
             }
 
-            await _optionRepository.DeleteAsync(optionToDelete);
+            _unitOfWork.Repository<Option>().DeleteEntity(optionToDelete);
+            await _unitOfWork.Complete();
+
 
             _logger.LogInformation($"Se eliminó de forma éxitosamente Option: {request.Id}");
 

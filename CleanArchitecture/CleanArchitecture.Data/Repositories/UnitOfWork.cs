@@ -10,6 +10,15 @@ namespace CleanArchitecture.Infrastructure.Repositories
         private Hashtable _repositories;
         private readonly MainContext _context;
 
+
+        /* Personalizacion de Repositorios
+            private IPersonalRepository _personalRepository;
+        
+            public IPersonalRepository PersonalRepository => _personalRepository ??= new PersonalRepository(_context);
+          
+         */
+
+
         public UnitOfWork(MainContext context)
         {
             _context = context;
@@ -36,7 +45,7 @@ namespace CleanArchitecture.Infrastructure.Repositories
 
             if (!_repositories.ContainsKey(type))
             {
-                Type repositoryType = typeof(IBaseRepository<>);
+                Type repositoryType = typeof(BaseRepository<>);
                 var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(TEntity)), _context);
                 _repositories.Add(type, repositoryInstance);
             }

@@ -6,6 +6,12 @@ namespace CleanArchitecture.Application.Contracts.Persistence
     {
         IBaseRepository<TEntity> Repository<TEntity>() where TEntity : BaseEntity;
 
+        /*
+            Para Personalización de Repositorios
+            
+            IPersonalRepository PersonalRepositoy { get; }
+
+        */
         Task<int> Complete();
     }
 }
