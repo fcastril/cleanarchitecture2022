@@ -3,6 +3,8 @@ using CleanArchitecture.Application.Features.Options.Commands.CreateOpion;
 using CleanArchitecture.Application.Features.Options.Commands.DeleteOption;
 using CleanArchitecture.Application.Features.Options.Commands.UpdateOption;
 using CleanArchitecture.Application.Features.Options.Queries.GetAllOption;
+using CleanArchitecture.Application.Features.Options.Queries.GetOptionByCode;
+using CleanArchitecture.Application.Features.Options.Queries.GetOptionById;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +29,26 @@ namespace CleanArchitecture.API.Controllers
         public async Task<ActionResult<IEnumerable<OptionDto>>> GetOptionAll()
         {
             var query = new GetAllOptionQuery();
+            return await _mediator.Send(query);
+        }
+
+        [HttpGet]
+        [Route("ByCode/{code}")]
+        [Authorize(Roles = "Administrador")]
+        [ProducesResponseType(typeof(OptionDto), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<OptionDto>> GetOptionByCode(string code)
+        {
+            var query = new GetOptionByCodeQuery(code);
+            return await _mediator.Send(query);
+        }
+
+        [HttpGet]
+        [Route("ById/{Id}")]
+        [Authorize(Roles = "Administrador")]
+        [ProducesResponseType(typeof(OptionDto), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<OptionDto>> GetOptionById(Guid Id)
+        {
+            var query = new GetOptionByIdQuery(Id);
             return await _mediator.Send(query);
         }
 
