@@ -24,6 +24,8 @@ namespace CleanArchitecture.Infrastructure.Repositories
             _context = context;
         }
 
+        public MainContext MainContext => _context;
+
         public async Task<int> Complete()
         {
             return await _context.SaveChangesAsync();
