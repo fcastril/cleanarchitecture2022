@@ -9,7 +9,6 @@ namespace CleanArchitecture.Application.Mappings
     {
         public MappingProfile()
         {
-            CreateMap<Company, CompanyDto>();
             CreateMap<Option, OptionDto>();
             CreateMap<CreateOptionCommand, Option>();
             CreateMap<UpdateOptionCommand, Option>();
