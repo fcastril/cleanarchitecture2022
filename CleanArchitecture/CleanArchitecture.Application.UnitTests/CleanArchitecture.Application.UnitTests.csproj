@@ -25,8 +25,4 @@
     <ProjectReference Include="..\CleanArchitecture.Data\CleanArchitecture.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Options\Commands\" />
-  </ItemGroup>
-
 </Project>

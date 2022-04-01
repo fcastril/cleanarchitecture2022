@@ -18,5 +18,14 @@ namespace CleanArchitecture.Application.UnitTests.Mocks
 
         }
 
+        public static void AddDataRepository(MainContext mainContextFake, List<T> mockDataList)
+        {
+            var fixture = new Fixture();
+            fixture.Behaviors.Add(new OmitOnRecursionBehavior());
+
+            mainContextFake.Set<T>().AddRange(mockDataList);
+            mainContextFake.SaveChanges();
+        }
+
     }
 }
