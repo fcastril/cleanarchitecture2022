@@ -10,8 +10,8 @@ namespace CleanArchitecture.Application.Mappings
         public MappingProfile()
         {
             CreateMap<Option, OptionDto>();
-            CreateMap<CreateOptionCommand, Option>();
-            CreateMap<UpdateOptionCommand, Option>();
+            CreateMap<CreateOptionCommand, Option>().ReverseMap();
+            CreateMap<UpdateOptionCommand, Option>().ReverseMap();
         }
     }
 }

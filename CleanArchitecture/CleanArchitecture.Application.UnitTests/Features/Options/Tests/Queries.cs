@@ -63,7 +63,7 @@ namespace CleanArchitecture.Application.UnitTests.Features.Options.Tests
             var requestId = new GetOptionByIdQuery(resultCode.Id);
             var resultId = await handlerId.Handle(requestId, CancellationToken.None);
             resultCode.ShouldBeOfType<OptionDto>();
-            Assert.Equal(resultCode.Id, resultCode.Id);
+            Assert.Equal(resultCode.Id, resultId.Id);
         }
 
     }

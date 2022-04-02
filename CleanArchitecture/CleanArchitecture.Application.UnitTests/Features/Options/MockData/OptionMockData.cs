@@ -12,5 +12,10 @@ namespace CleanArchitecture.Application.UnitTests.Features.Options.MockData
                                         .WithName(nameof(Option.Name))
                                         .Build();
         }
+
+        public static object? GetOptionCommand()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
